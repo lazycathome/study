@@ -1,18 +1,17 @@
 package cn.bigdb.bc;
 
-
 import java.io.UnsupportedEncodingException;
 
 import org.bouncycastle.util.encoders.Base64;
 
 /**
- * »ùÓÚBouncy CastleµÄBase64¼ÓÃÜ
+ * åŸºäºŽBouncy Castleçš„Base64åŠ å¯†
  */
 public class Base64CoderBC {
     private static final String ENCODING = "UTF-8";
     
     /**
-     * Base64¼ÓÃÜ
+     * Base64åŠ å¯†
      */
     public static String encode(String data) throws UnsupportedEncodingException{
         byte[] encodedByte = Base64.encode(data.getBytes(ENCODING));
@@ -20,7 +19,7 @@ public class Base64CoderBC {
     }
     
     /**
-     * Base64½âÃÜ
+     * Base64è§£å¯†
      */
     public static String decode(String data) throws UnsupportedEncodingException{
         byte[] decodedByte = Base64.decode(data.getBytes(ENCODING));
@@ -28,17 +27,17 @@ public class Base64CoderBC {
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      * @param args
      * @throws UnsupportedEncodingException 
      */
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String data = " ÕÒÒ»¸öºÃ¹ÃÄï×öÀÏÆÅÊÇÎÒµÄÃÎ Ïë£¡  ";
-        System.out.println("Ô­ÎÄ-->"+data);
+        String data = " æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜åšè€å©†æ˜¯æˆ‘çš„æ¢¦ æƒ³ï¼  ";
+        System.out.println("åŽŸæ–‡-->"+data);
         String encodedStr = Base64CoderBC.encode(data);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr);
         String decodedStr = Base64CoderBC.decode(encodedStr);
-        System.out.println("½âÃÜºó-->"+decodedStr);
+        System.out.println("è§£å¯†åŽ-->"+decodedStr);
         System.out.println(data.equals(decodedStr));
     }
 }

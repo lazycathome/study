@@ -20,48 +20,48 @@ import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- * »ùÓÚJDKµÄRSAËã·¨£¬¹¤×÷Ä£Ê½²ÉÓÃECB
+ * åŸºäºŽJDKçš„RSAç®—æ³•ï¼Œå·¥ä½œæ¨¡å¼é‡‡ç”¨ECB
  */
 public class RSAJDK {
     private static final String ENCODING = "UTF-8";
-    private static final String KEY_ALGORITHM = "RSA";//·Ç¶Ô³Æ¼ÓÃÜÃÜÔ¿Ëã·¨
-    private static final String CIPHER_ALGORITHM = "RSA/ECB/PKCS1Padding";//¼Ó½âÃÜËã·¨ ¸ñÊ½£ºËã·¨/¹¤×÷Ä£Ê½/Ìî³äÄ£Ê½
-    private static final int KEY_SIZE = 512;//·Ç¶Ô³ÆÃÜÔ¿³¤¶È£¨512~1024Ö®¼äµÄ64µÄÕûÊý±¶£©
+    private static final String KEY_ALGORITHM = "RSA";//éžå¯¹ç§°åŠ å¯†å¯†é’¥ç®—æ³•
+    private static final String CIPHER_ALGORITHM = "RSA/ECB/PKCS1Padding";//åŠ è§£å¯†ç®—æ³• æ ¼å¼ï¼šç®—æ³•/å·¥ä½œæ¨¡å¼/å¡«å……æ¨¡å¼
+    private static final int KEY_SIZE = 512;//éžå¯¹ç§°å¯†é’¥é•¿åº¦ï¼ˆ512~1024ä¹‹é—´çš„64çš„æ•´æ•°å€ï¼‰
     
     /**
-     * »¹Ô­¹«Ô¿
-     * @param pubKey ¶þ½øÖÆ¹«Ô¿
+     * è¿˜åŽŸå…¬é’¥
+     * @param pubKey äºŒè¿›åˆ¶å…¬é’¥
      */
     public static PublicKey toPublicKey(byte[] pubKey) throws NoSuchAlgorithmException, 
                                                               InvalidKeySpecException{
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);//ÃÜÔ¿¹¤³§
-        return keyFactory.generatePublic(new X509EncodedKeySpec(pubKey));//»¹Ô­¹«Ô¿
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);//å¯†é’¥å·¥åŽ‚
+        return keyFactory.generatePublic(new X509EncodedKeySpec(pubKey));//è¿˜åŽŸå…¬é’¥
     }
     
     /**
-     * »¹Ô­Ë½Ô¿
-     * @param priKey ¶þ½øÖÆË½Ô¿
+     * è¿˜åŽŸç§é’¥
+     * @param priKey äºŒè¿›åˆ¶ç§é’¥
      */
     public static PrivateKey toPrivateKey(byte[] priKey) throws NoSuchAlgorithmException, 
                                                                 InvalidKeySpecException{
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);//ÃÜÔ¿¹¤³§
-        return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(priKey));//»¹Ô­Ë½Ô¿
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);//å¯†é’¥å·¥åŽ‚
+        return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(priKey));//è¿˜åŽŸç§é’¥
     }
     
     /**
-     * Éú³É¼×·½ÃÜÔ¿¶Ô
+     * ç”Ÿæˆç”²æ–¹å¯†é’¥å¯¹
      */
     public static KeyPair initKey() throws NoSuchAlgorithmException{
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);//ÃÜÔ¿¶ÔÉú³ÉÆ÷
-        keyPairGenerator.initialize(KEY_SIZE);//Ö¸¶¨ÃÜÔ¿³¤¶È
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();//Éú³ÉÃÜÔ¿¶Ô
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);//å¯†é’¥å¯¹ç”Ÿæˆå™¨
+        keyPairGenerator.initialize(KEY_SIZE);//æŒ‡å®šå¯†é’¥é•¿åº¦
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();//ç”Ÿæˆå¯†é’¥å¯¹
         return keyPair;
     }
     
     /**
-     * Ë½Ô¿¼ÓÃÜ
-     * @param data     ´ý¼ÓÃÜÊý¾Ý
-     * @param keyByte  Ë½Ô¿
+     * ç§é’¥åŠ å¯†
+     * @param data     å¾…åŠ å¯†æ•°æ®
+     * @param keyByte  ç§é’¥
      */
     public static byte[] encryptPriKey(String data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                            InvalidKeySpecException, 
@@ -70,17 +70,17 @@ public class RSAJDK {
                                                                            IllegalBlockSizeException, 
                                                                            BadPaddingException, 
                                                                            UnsupportedEncodingException {
-        PrivateKey priKey = toPrivateKey(keyByte);//»¹Ô­Ë½Ô¿
+        PrivateKey priKey = toPrivateKey(keyByte);//è¿˜åŽŸç§é’¥
 
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-        cipher.init(Cipher.ENCRYPT_MODE, priKey);//ÉèÖÃ¼ÓÃÜÄ£Ê½²¢ÇÒ³õÊ¼»¯key
+        cipher.init(Cipher.ENCRYPT_MODE, priKey);//è®¾ç½®åŠ å¯†æ¨¡å¼å¹¶ä¸”åˆå§‹åŒ–key
         return cipher.doFinal(data.getBytes(ENCODING));
     }
     
     /**
-     * ¹«Ô¿¼ÓÃÜ
-     * @param data        ´ý¼ÓÃÜÊý¾Ý
-     * @param keyByte    ¹«Ô¿
+     * å…¬é’¥åŠ å¯†
+     * @param data        å¾…åŠ å¯†æ•°æ®
+     * @param keyByte    å…¬é’¥
      */
     public static byte[] encryptPubKey(String data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                            InvalidKeySpecException, 
@@ -89,17 +89,17 @@ public class RSAJDK {
                                                                            IllegalBlockSizeException, 
                                                                            BadPaddingException, 
                                                                            UnsupportedEncodingException {
-        PublicKey pubKey = toPublicKey(keyByte);//»¹Ô­¹«Ô¿
+        PublicKey pubKey = toPublicKey(keyByte);//è¿˜åŽŸå…¬é’¥
 
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-        cipher.init(Cipher.ENCRYPT_MODE, pubKey);//ÉèÖÃ¼ÓÃÜÄ£Ê½²¢ÇÒ³õÊ¼»¯key
+        cipher.init(Cipher.ENCRYPT_MODE, pubKey);//è®¾ç½®åŠ å¯†æ¨¡å¼å¹¶ä¸”åˆå§‹åŒ–key
         return cipher.doFinal(data.getBytes(ENCODING));
     }
     
     /**
-     * Ë½Ô¿½âÃÜ
-     * @param data        ´ý½âÃÜÊý¾Ý
-     * @param keyByte    Ë½Ô¿
+     * ç§é’¥è§£å¯†
+     * @param data        å¾…è§£å¯†æ•°æ®
+     * @param keyByte    ç§é’¥
      */
     public static byte[] decryptPriKey(byte[] data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                            InvalidKeySpecException, 
@@ -107,7 +107,7 @@ public class RSAJDK {
                                                                            InvalidKeyException, 
                                                                            IllegalBlockSizeException, 
                                                                            BadPaddingException {
-        PrivateKey priKey = toPrivateKey(keyByte);//»¹Ô­Ë½Ô¿
+        PrivateKey priKey = toPrivateKey(keyByte);//è¿˜åŽŸç§é’¥
         
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, priKey);
@@ -115,9 +115,9 @@ public class RSAJDK {
     }
     
     /**
-     * ¹«Ô¿½âÃÜ
+     * å…¬é’¥è§£å¯†
      * @param data
-     * @param keyByte    ¹«Ô¿
+     * @param keyByte    å…¬é’¥
      */
     public static byte[] decryptPubKey(byte[] data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                            InvalidKeySpecException, 
@@ -125,7 +125,7 @@ public class RSAJDK {
                                                                            InvalidKeyException, 
                                                                            IllegalBlockSizeException, 
                                                                            BadPaddingException {
-        PublicKey pubKey = toPublicKey(keyByte);//»¹Ô­¹«Ô¿
+        PublicKey pubKey = toPublicKey(keyByte);//è¿˜åŽŸå…¬é’¥
         
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, pubKey);
@@ -133,21 +133,21 @@ public class RSAJDK {
     }
     
     /**
-     * »ñÈ¡¹«Ô¿
+     * èŽ·å–å…¬é’¥
      */
     public static byte[] getPublicKey(KeyPair keyPair){
         return keyPair.getPublic().getEncoded();
     }
     
     /**
-     * »ñÈ¡Ë½Ô¿
+     * èŽ·å–ç§é’¥
      */
     public static byte[] getPrivateKey(KeyPair keyPair){
         return keyPair.getPrivate().getEncoded();
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      */
     public static void main(String[] args) throws NoSuchAlgorithmException, 
                                                   InvalidKeyException, 
@@ -156,31 +156,31 @@ public class RSAJDK {
                                                   IllegalBlockSizeException, 
                                                   BadPaddingException, 
                                                   UnsupportedEncodingException{
-        byte[] pubKey1;//¼×·½¹«Ô¿
-        byte[] priKey1;//¼×·½Ë½Ô¿
+        byte[] pubKey1;//ç”²æ–¹å…¬é’¥
+        byte[] priKey1;//ç”²æ–¹ç§é’¥
         
-        /*********************²âÊÔÊÇ·ñ¿ÉÒÔÕýÈ·Éú³ÉÒÔÉÏ2¸ökey*********************/
-        KeyPair keyPair1 = RSAJDK.initKey();//Éú³É¼×·½ÃÜÔ¿¶Ô
+        /*********************æµ‹è¯•æ˜¯å¦å¯ä»¥æ­£ç¡®ç”Ÿæˆä»¥ä¸Š2ä¸ªkey*********************/
+        KeyPair keyPair1 = RSAJDK.initKey();//ç”Ÿæˆç”²æ–¹å¯†é’¥å¯¹
         pubKey1 = RSAJDK.getPublicKey(keyPair1);
         priKey1 = RSAJDK.getPrivateKey(keyPair1);
         
-        System.out.println("¼×·½¹«Ô¿pubKey1-->"+Base64.encodeBase64String(pubKey1)+"@@pubKey1.length-->"+pubKey1.length);
-        System.out.println("¼×·½Ë½Ô¿priKey1-->"+Base64.encodeBase64String(priKey1)+"@@priKey1.length-->"+priKey1.length);
+        System.out.println("ç”²æ–¹å…¬é’¥pubKey1-->"+Base64.encodeBase64String(pubKey1)+"@@pubKey1.length-->"+pubKey1.length);
+        System.out.println("ç”²æ–¹ç§é’¥priKey1-->"+Base64.encodeBase64String(priKey1)+"@@priKey1.length-->"+priKey1.length);
         
-        /*********************²âÊÔ¼×·½Ê¹ÓÃË½Ô¿¼ÓÃÜÊý¾ÝÏòÒÒ·½·¢ËÍ£¬ÒÒ·½Ê¹ÓÃ¹«Ô¿½âÃÜÊý¾Ý*********************/
-        System.out.println("¼×·½-->ÒÒ·½");
-        String data = "ÕÒÒ»¸öºÃ¹ÃÄï°¡£¡";
+        /*********************æµ‹è¯•ç”²æ–¹ä½¿ç”¨ç§é’¥åŠ å¯†æ•°æ®å‘ä¹™æ–¹å‘é€ï¼Œä¹™æ–¹ä½¿ç”¨å…¬é’¥è§£å¯†æ•°æ®*********************/
+        System.out.println("ç”²æ–¹-->ä¹™æ–¹");
+        String data = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜å•Šï¼";
         byte[] encodeStr = RSAJDK.encryptPriKey(data, priKey1);
-        System.out.println("¼×·½¼ÓÃÜºóµÄÊý¾Ý-->"+Base64.encodeBase64String(encodeStr));
+        System.out.println("ç”²æ–¹åŠ å¯†åŽçš„æ•°æ®-->"+Base64.encodeBase64String(encodeStr));
         byte[] decodeStr = RSAJDK.decryptPubKey(encodeStr, pubKey1);
-        System.out.println("ÒÒ·½½âÃÜºóµÄÊý¾Ý-->"+new String(decodeStr,"UTF-8"));
+        System.out.println("ä¹™æ–¹è§£å¯†åŽçš„æ•°æ®-->"+new String(decodeStr,"UTF-8"));
         
-        /*********************²âÊÔÒÒ·½Ê¹ÓÃË½Ô¿¼ÓÃÜÊý¾ÝÏò¼×·½·¢ËÍ£¬¼×·½Ê¹ÓÃ¹«Ô¿½âÃÜÊý¾Ý*********************/
-        System.out.println("ÒÒ·½-->¼×·½");
-        String data2 = "ÕÒÒ»¸öºÃ¹ÃÄï°¡£¡";
+        /*********************æµ‹è¯•ä¹™æ–¹ä½¿ç”¨ç§é’¥åŠ å¯†æ•°æ®å‘ç”²æ–¹å‘é€ï¼Œç”²æ–¹ä½¿ç”¨å…¬é’¥è§£å¯†æ•°æ®*********************/
+        System.out.println("ä¹™æ–¹-->ç”²æ–¹");
+        String data2 = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜å•Šï¼";
         byte[] encodeStr2 = RSAJDK.encryptPubKey(data2, pubKey1);
-        System.out.println("ÒÒ·½¼ÓÃÜºóµÄÊý¾Ý-->"+Base64.encodeBase64String(encodeStr2));
+        System.out.println("ä¹™æ–¹åŠ å¯†åŽçš„æ•°æ®-->"+Base64.encodeBase64String(encodeStr2));
         byte[] decodeStr2 = RSAJDK.decryptPriKey(encodeStr2, priKey1);
-        System.out.println("¼×·½½âÃÜºóµÄÊý¾Ý-->"+new String(decodeStr2,"UTF-8"));
+        System.out.println("ç”²æ–¹è§£å¯†åŽçš„æ•°æ®-->"+new String(decodeStr2,"UTF-8"));
     }
 }

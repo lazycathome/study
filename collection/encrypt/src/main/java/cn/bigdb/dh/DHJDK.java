@@ -1,6 +1,5 @@
 package cn.bigdb.dh;
 
-
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -27,46 +26,46 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- * »ùÓÚJDKµÄDHËã·¨£¬¹¤×÷Ä£Ê½²ÉÓÃECB
+ * åŸºäºŽJDKçš„DHç®—æ³•ï¼Œå·¥ä½œæ¨¡å¼é‡‡ç”¨ECB
  */
 public class DHJDK {
     private static final String ENCODING = "UTF-8";
-    private static final String FDC_KEY_ALGORITHM = "DH";//·Ç¶Ô³Æ¼ÓÃÜÃÜÔ¿Ëã·¨
-    private static final String DC_KEY_ALGORITHM = "AES";//²úÉú±¾µØÃÜÔ¿µÄËã·¨£¨¶Ô³Æ¼ÓÃÜÃÜÔ¿Ëã·¨£©
-    private static final String CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";//¼Ó½âÃÜËã·¨ ¸ñÊ½£ºËã·¨/¹¤×÷Ä£Ê½/Ìî³äÄ£Ê½ ×¢Òâ£ºECB²»Ê¹ÓÃIV²ÎÊý
-    private static final int FDC_KEY_SIZE = 512;//·Ç¶Ô³ÆÃÜÔ¿³¤¶È£¨512~1024Ö®¼äµÄ64µÄÕûÊý±¶£©
+    private static final String FDC_KEY_ALGORITHM = "DH";//éžå¯¹ç§°åŠ å¯†å¯†é’¥ç®—æ³•
+    private static final String DC_KEY_ALGORITHM = "AES";//äº§ç”Ÿæœ¬åœ°å¯†é’¥çš„ç®—æ³•ï¼ˆå¯¹ç§°åŠ å¯†å¯†é’¥ç®—æ³•ï¼‰
+    private static final String CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";//åŠ è§£å¯†ç®—æ³• æ ¼å¼ï¼šç®—æ³•/å·¥ä½œæ¨¡å¼/å¡«å……æ¨¡å¼ æ³¨æ„ï¼šECBä¸ä½¿ç”¨IVå‚æ•°
+    private static final int FDC_KEY_SIZE = 512;//éžå¯¹ç§°å¯†é’¥é•¿åº¦ï¼ˆ512~1024ä¹‹é—´çš„64çš„æ•´æ•°å€ï¼‰
     
     /**
-     * Éú³É¼×·½ÃÜÔ¿¶Ô
+     * ç”Ÿæˆç”²æ–¹å¯†é’¥å¯¹
      */
     public static KeyPair initKey() throws NoSuchAlgorithmException{
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(FDC_KEY_ALGORITHM);//ÃÜÔ¿¶ÔÉú³ÉÆ÷
-        keyPairGenerator.initialize(FDC_KEY_SIZE);//Ö¸¶¨ÃÜÔ¿³¤¶È
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();//Éú³ÉÃÜÔ¿¶Ô
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(FDC_KEY_ALGORITHM);//å¯†é’¥å¯¹ç”Ÿæˆå™¨
+        keyPairGenerator.initialize(FDC_KEY_SIZE);//æŒ‡å®šå¯†é’¥é•¿åº¦
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();//ç”Ÿæˆå¯†é’¥å¯¹
         return keyPair;
     }
     
     /**
-     * Éú³ÉÒÒ·½ÃÜÔ¿¶Ô
-     * @param key ¼×·½¹«Ô¿
+     * ç”Ÿæˆä¹™æ–¹å¯†é’¥å¯¹
+     * @param key ç”²æ–¹å…¬é’¥
      */
     public static KeyPair initKey(byte[] key) throws NoSuchAlgorithmException, 
                                                      InvalidKeySpecException, 
                                                      InvalidAlgorithmParameterException{
-        KeyFactory keyFactory = KeyFactory.getInstance(FDC_KEY_ALGORITHM);//ÃÜÔ¿¹¤³§
-        PublicKey publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(key));//»¹Ô­¼×·½¹«Ô¿
+        KeyFactory keyFactory = KeyFactory.getInstance(FDC_KEY_ALGORITHM);//å¯†é’¥å·¥åŽ‚
+        PublicKey publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(key));//è¿˜åŽŸç”²æ–¹å…¬é’¥
         DHParameterSpec dHParameterSpec = ((DHPublicKey)publicKey).getParams();
         
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(keyFactory.getAlgorithm());//ÒÒ·½ÃÜÔ¿¶ÔÉú³ÉÆ÷
-        keyPairGenerator.initialize(dHParameterSpec);//Ê¹ÓÃ¼×·½¹«Ô¿²ÎÊý³õÊ¼»¯ÒÒ·½ÃÜÔ¿¶ÔÉú³ÉÆ÷
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();//Éú³ÉÃÜÔ¿¶Ô
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(keyFactory.getAlgorithm());//ä¹™æ–¹å¯†é’¥å¯¹ç”Ÿæˆå™¨
+        keyPairGenerator.initialize(dHParameterSpec);//ä½¿ç”¨ç”²æ–¹å…¬é’¥å‚æ•°åˆå§‹åŒ–ä¹™æ–¹å¯†é’¥å¯¹ç”Ÿæˆå™¨
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();//ç”Ÿæˆå¯†é’¥å¯¹
         return keyPair;
     }
     
     /**
-     * DH¼ÓÃÜ
-     * @param data     ´ø¼ÓÃÜÊý¾Ý
-     * @param keyByte  ±¾µØÃÜÔ¿£¬ÓÉgetSecretKey(byte[] publicKey, byte[] privateKey)²úÉú
+     * DHåŠ å¯†
+     * @param data     å¸¦åŠ å¯†æ•°æ®
+     * @param keyByte  æœ¬åœ°å¯†é’¥ï¼Œç”±getSecretKey(byte[] publicKey, byte[] privateKey)äº§ç”Ÿ
      */
     public static byte[] encrypt(String data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                      NoSuchPaddingException, 
@@ -74,63 +73,63 @@ public class DHJDK {
                                                                      IllegalBlockSizeException, 
                                                                      BadPaddingException, 
                                                                      UnsupportedEncodingException {
-        Key key = new SecretKeySpec(keyByte, DC_KEY_ALGORITHM);//Éú³É±¾µØÃÜÔ¿
+        Key key = new SecretKeySpec(keyByte, DC_KEY_ALGORITHM);//ç”Ÿæˆæœ¬åœ°å¯†é’¥
 
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-        cipher.init(Cipher.ENCRYPT_MODE, key);//ÉèÖÃ¼ÓÃÜÄ£Ê½²¢ÇÒ³õÊ¼»¯key
+        cipher.init(Cipher.ENCRYPT_MODE, key);//è®¾ç½®åŠ å¯†æ¨¡å¼å¹¶ä¸”åˆå§‹åŒ–key
         return cipher.doFinal(data.getBytes(ENCODING));
     }
     
     /**
-     * DH½âÃÜ
-     * @param data        ´ý½âÃÜÊý¾ÝÎª×Ö½ÚÊý×é
-     * @param keyByte    ±¾µØÃÜÔ¿£¬ÓÉgetSecretKey(byte[] publicKey, byte[] privateKey)²úÉú
+     * DHè§£å¯†
+     * @param data        å¾…è§£å¯†æ•°æ®ä¸ºå­—èŠ‚æ•°ç»„
+     * @param keyByte    æœ¬åœ°å¯†é’¥ï¼Œç”±getSecretKey(byte[] publicKey, byte[] privateKey)äº§ç”Ÿ
      */
     public static byte[] decrypt(byte[] data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                      NoSuchPaddingException, 
                                                                      InvalidKeyException, 
                                                                      IllegalBlockSizeException, 
                                                                      BadPaddingException {
-        Key key = new SecretKeySpec(keyByte, DC_KEY_ALGORITHM);//Éú³É±¾µØÃÜÔ¿
+        Key key = new SecretKeySpec(keyByte, DC_KEY_ALGORITHM);//ç”Ÿæˆæœ¬åœ°å¯†é’¥
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(data);
     }
     
     /**
-     * ¸ù¾Ý±¾·½Ë½Ô¿Óë¶Ô·½¹«Ô¿¹¹½¨±¾µØÃÜÔ¿£¨¼´¶Ô³Æ¼ÓÃÜµÄÃÜÔ¿£©
-     * @param publicKey        ¶Ô·½¹«Ô¿
-     * @param privateKey    ±¾·½Ë½Ô¿
+     * æ ¹æ®æœ¬æ–¹ç§é’¥ä¸Žå¯¹æ–¹å…¬é’¥æž„å»ºæœ¬åœ°å¯†é’¥ï¼ˆå³å¯¹ç§°åŠ å¯†çš„å¯†é’¥ï¼‰
+     * @param publicKey        å¯¹æ–¹å…¬é’¥
+     * @param privateKey    æœ¬æ–¹ç§é’¥
      */
     public static byte[] getSecretKey(byte[] publicKey, byte[] privateKey) throws NoSuchAlgorithmException, 
                                                                                   InvalidKeySpecException, 
                                                                                   InvalidKeyException{
-        KeyFactory keyFactory = KeyFactory.getInstance(FDC_KEY_ALGORITHM);//ÃÜÔ¿¹¤³§
-        PublicKey pubkey = keyFactory.generatePublic(new X509EncodedKeySpec(publicKey));//»¹Ô­¹«Ô¿
-        PrivateKey prikey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKey));//»¹Ô­Ë½Ô¿
+        KeyFactory keyFactory = KeyFactory.getInstance(FDC_KEY_ALGORITHM);//å¯†é’¥å·¥åŽ‚
+        PublicKey pubkey = keyFactory.generatePublic(new X509EncodedKeySpec(publicKey));//è¿˜åŽŸå…¬é’¥
+        PrivateKey prikey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKey));//è¿˜åŽŸç§é’¥
         
         KeyAgreement keyAgreement = KeyAgreement.getInstance(keyFactory.getAlgorithm());
         keyAgreement.init(prikey);
         keyAgreement.doPhase(pubkey, true);
-        return keyAgreement.generateSecret(DC_KEY_ALGORITHM).getEncoded();//Éú³É±¾µØÃÜÔ¿£¨¶Ô³Æ¼ÓÃÜµÄÃÜÔ¿£©
+        return keyAgreement.generateSecret(DC_KEY_ALGORITHM).getEncoded();//ç”Ÿæˆæœ¬åœ°å¯†é’¥ï¼ˆå¯¹ç§°åŠ å¯†çš„å¯†é’¥ï¼‰
     }
     
     /**
-     * »ñÈ¡¹«Ô¿
+     * èŽ·å–å…¬é’¥
      */
     public static byte[] getPublicKey(KeyPair keyPair){
         return keyPair.getPublic().getEncoded();
     }
     
     /**
-     * »ñÈ¡Ë½Ô¿
+     * èŽ·å–ç§é’¥
      */
     public static byte[] getPrivateKey(KeyPair keyPair){
         return keyPair.getPrivate().getEncoded();
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      */
     public static void main(String[] args) throws NoSuchAlgorithmException, 
                                                   InvalidKeySpecException, 
@@ -140,46 +139,46 @@ public class DHJDK {
                                                   IllegalBlockSizeException, 
                                                   BadPaddingException, 
                                                   UnsupportedEncodingException {
-        byte[] pubKey1;//¼×·½¹«Ô¿
-        byte[] priKey1;//¼×·½Ë½Ô¿
-        byte[] key1;//¼×·½±¾µØÃÜÔ¿
-        byte[] pubKey2;//ÒÒ·½¹«Ô¿
-        byte[] priKey2;//ÒÒ·½Ë½Ô¿
-        byte[] key2;//ÒÒ·½±¾µØÃÜÔ¿
+        byte[] pubKey1;//ç”²æ–¹å…¬é’¥
+        byte[] priKey1;//ç”²æ–¹ç§é’¥
+        byte[] key1;//ç”²æ–¹æœ¬åœ°å¯†é’¥
+        byte[] pubKey2;//ä¹™æ–¹å…¬é’¥
+        byte[] priKey2;//ä¹™æ–¹ç§é’¥
+        byte[] key2;//ä¹™æ–¹æœ¬åœ°å¯†é’¥
         
-        /*********************²âÊÔÊÇ·ñ¿ÉÒÔÕýÈ·Éú³ÉÒÔÉÏ6¸ökey£¬ÒÔ¼°key1Óëkey2ÊÇ·ñÏàµÈ*********************/
-        KeyPair keyPair1 = DHJDK.initKey();//Éú³É¼×·½ÃÜÔ¿¶Ô
+        /*********************æµ‹è¯•æ˜¯å¦å¯ä»¥æ­£ç¡®ç”Ÿæˆä»¥ä¸Š6ä¸ªkeyï¼Œä»¥åŠkey1ä¸Žkey2æ˜¯å¦ç›¸ç­‰*********************/
+        KeyPair keyPair1 = DHJDK.initKey();//ç”Ÿæˆç”²æ–¹å¯†é’¥å¯¹
         pubKey1 = DHJDK.getPublicKey(keyPair1);
         priKey1 = DHJDK.getPrivateKey(keyPair1);
         
-        KeyPair keyPair2 = DHJDK.initKey(pubKey1);//¸ù¾Ý¼×·½¹«Ô¿Éú³ÉÒÒ·½ÃÜÔ¿¶Ô
+        KeyPair keyPair2 = DHJDK.initKey(pubKey1);//æ ¹æ®ç”²æ–¹å…¬é’¥ç”Ÿæˆä¹™æ–¹å¯†é’¥å¯¹
         pubKey2 = DHJDK.getPublicKey(keyPair2);
         priKey2 = DHJDK.getPrivateKey(keyPair2);
         
-        key1 = DHJDK.getSecretKey(pubKey2, priKey1);//Ê¹ÓÃ¶Ô·½¹«Ô¿ºÍ×Ô¼ºË½Ô¿¹¹½¨±¾µØÃÜÔ¿
-        key2 = DHJDK.getSecretKey(pubKey1, priKey2);//Ê¹ÓÃ¶Ô·½¹«Ô¿ºÍ×Ô¼ºË½Ô¿¹¹½¨±¾µØÃÜÔ¿
+        key1 = DHJDK.getSecretKey(pubKey2, priKey1);//ä½¿ç”¨å¯¹æ–¹å…¬é’¥å’Œè‡ªå·±ç§é’¥æž„å»ºæœ¬åœ°å¯†é’¥
+        key2 = DHJDK.getSecretKey(pubKey1, priKey2);//ä½¿ç”¨å¯¹æ–¹å…¬é’¥å’Œè‡ªå·±ç§é’¥æž„å»ºæœ¬åœ°å¯†é’¥
         
-        System.out.println("¼×·½¹«Ô¿pubKey1-->"+Base64.encodeBase64String(pubKey1)+"@@pubKey1.length-->"+pubKey1.length);
-        System.out.println("¼×·½Ë½Ô¿priKey1-->"+Base64.encodeBase64String(priKey1)+"@@priKey1.length-->"+priKey1.length);
-        System.out.println("ÒÒ·½¹«Ô¿pubKey2-->"+Base64.encodeBase64String(pubKey2)+"@@pubKey2.length-->"+pubKey2.length);
-        System.out.println("ÒÒ·½Ë½Ô¿priKey2-->"+Base64.encodeBase64String(priKey2)+"@@priKey2.length-->"+priKey2.length);
-        System.out.println("¼×·½ÃÜÔ¿key1-->"+Base64.encodeBase64String(key1));
-        System.out.println("ÒÒ·½ÃÜÔ¿key2-->"+Base64.encodeBase64String(key2));
+        System.out.println("ç”²æ–¹å…¬é’¥pubKey1-->"+Base64.encodeBase64String(pubKey1)+"@@pubKey1.length-->"+pubKey1.length);
+        System.out.println("ç”²æ–¹ç§é’¥priKey1-->"+Base64.encodeBase64String(priKey1)+"@@priKey1.length-->"+priKey1.length);
+        System.out.println("ä¹™æ–¹å…¬é’¥pubKey2-->"+Base64.encodeBase64String(pubKey2)+"@@pubKey2.length-->"+pubKey2.length);
+        System.out.println("ä¹™æ–¹ç§é’¥priKey2-->"+Base64.encodeBase64String(priKey2)+"@@priKey2.length-->"+priKey2.length);
+        System.out.println("ç”²æ–¹å¯†é’¥key1-->"+Base64.encodeBase64String(key1));
+        System.out.println("ä¹™æ–¹å¯†é’¥key2-->"+Base64.encodeBase64String(key2));
         
-        /*********************²âÊÔ¼×·½Ê¹ÓÃ±¾µØÃÜÔ¿¼ÓÃÜÊý¾ÝÏòÒÒ·½·¢ËÍ£¬ÒÒ·½Ê¹ÓÃ±¾µØÃÜÔ¿½âÃÜÊý¾Ý*********************/
-        System.out.println("¼×·½-->ÒÒ·½");
-        String data = "ÕÒÒ»¸öºÃ¹ÃÄï°¡£¡";
+        /*********************æµ‹è¯•ç”²æ–¹ä½¿ç”¨æœ¬åœ°å¯†é’¥åŠ å¯†æ•°æ®å‘ä¹™æ–¹å‘é€ï¼Œä¹™æ–¹ä½¿ç”¨æœ¬åœ°å¯†é’¥è§£å¯†æ•°æ®*********************/
+        System.out.println("ç”²æ–¹-->ä¹™æ–¹");
+        String data = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜å•Šï¼";
         byte[] encodeStr = DHJDK.encrypt(data, key1);
-        System.out.println("¼×·½¼ÓÃÜºóµÄÊý¾Ý-->"+Base64.encodeBase64String(encodeStr));
+        System.out.println("ç”²æ–¹åŠ å¯†åŽçš„æ•°æ®-->"+Base64.encodeBase64String(encodeStr));
         byte[] decodeStr = DHJDK.decrypt(encodeStr, key2);
-        System.out.println("ÒÒ·½½âÃÜºóµÄÊý¾Ý-->"+new String(decodeStr,"UTF-8"));
+        System.out.println("ä¹™æ–¹è§£å¯†åŽçš„æ•°æ®-->"+new String(decodeStr,"UTF-8"));
         
-        /*********************²âÊÔÒÒ·½Ê¹ÓÃ±¾µØÃÜÔ¿¼ÓÃÜÊý¾ÝÏò¼×·½·¢ËÍ£¬¼×·½Ê¹ÓÃ±¾µØÃÜÔ¿½âÃÜÊý¾Ý*********************/
-        System.out.println("ÒÒ·½-->¼×·½");
-        String data2 = "ÕÒÒ»¸öºÃ¹ÃÄï°¡£¡";
+        /*********************æµ‹è¯•ä¹™æ–¹ä½¿ç”¨æœ¬åœ°å¯†é’¥åŠ å¯†æ•°æ®å‘ç”²æ–¹å‘é€ï¼Œç”²æ–¹ä½¿ç”¨æœ¬åœ°å¯†é’¥è§£å¯†æ•°æ®*********************/
+        System.out.println("ä¹™æ–¹-->ç”²æ–¹");
+        String data2 = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜å•Šï¼";
         byte[] encodeStr2 = DHJDK.encrypt(data2, key2);
-        System.out.println("ÒÒ·½¼ÓÃÜºóµÄÊý¾Ý-->"+Base64.encodeBase64String(encodeStr2));
+        System.out.println("ä¹™æ–¹åŠ å¯†åŽçš„æ•°æ®-->"+Base64.encodeBase64String(encodeStr2));
         byte[] decodeStr2 = DHJDK.decrypt(encodeStr, key1);
-        System.out.println("¼×·½½âÃÜºóµÄÊý¾Ý-->"+new String(decodeStr2,"UTF-8"));
+        System.out.println("ç”²æ–¹è§£å¯†åŽçš„æ•°æ®-->"+new String(decodeStr2,"UTF-8"));
     }
 }

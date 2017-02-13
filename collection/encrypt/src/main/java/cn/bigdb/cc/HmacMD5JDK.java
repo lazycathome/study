@@ -13,15 +13,15 @@ import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.util.encoders.Hex;
 
 /**
- * »ùÓÚJDKµÄHmacMD5Ëã·¨
+ * åŸºäºŽJDKçš„HmacMD5ç®—æ³•
  */
 public class HmacMD5JDK {
     private static final String ENCODING = "UTF-8";
-    private static final String ALGORITHM = "HmacMD5";//Ö¸¶¨¾ßÌåËã·¨HmacMD5,HmacSHA1,HmacSHA256
+    private static final String ALGORITHM = "HmacMD5";//æŒ‡å®šå…·ä½“ç®—æ³•HmacMD5,HmacSHA1,HmacSHA256
     
     /**
-     * ²úÉúÃÜÔ¿Á½ÖÖ·½Ê½ 1)ÊÇÓÉjdk×Ô¼ºÀ´²úÉúµÄ£¬2)ÎÒÃÇ¿ÉÒÔ×Ô¼ºÖ¸¶¨Ò»¸ö×Ö½ÚÊý×é
-     * ×¢Òâ£ºÃÜÔ¿ÊÇÒÔ¶þ½øÖÆ×Ö½ÚÊý×é´æ´¢µÄ
+     * äº§ç”Ÿå¯†é’¥ä¸¤ç§æ–¹å¼ 1)æ˜¯ç”±jdkè‡ªå·±æ¥äº§ç”Ÿçš„ï¼Œ2)æˆ‘ä»¬å¯ä»¥è‡ªå·±æŒ‡å®šä¸€ä¸ªå­—èŠ‚æ•°ç»„
+     * æ³¨æ„ï¼šå¯†é’¥æ˜¯ä»¥äºŒè¿›åˆ¶å­—èŠ‚æ•°ç»„å­˜å‚¨çš„
      */
     public static byte[] getKey() throws NoSuchAlgorithmException{
         SecretKey key = KeyGenerator.getInstance(ALGORITHM).generateKey();
@@ -29,34 +29,34 @@ public class HmacMD5JDK {
     }
     
     /**
-     * HmacMD5¼ÓÃÜ
-     * @param data     ´ø¼ÓÃÜÊý¾Ý
-     * @param keyByte  ÃÜÔ¿
+     * HmacMD5åŠ å¯†
+     * @param data     å¸¦åŠ å¯†æ•°æ®
+     * @param keyByte  å¯†é’¥
      */
     public static byte[] encode(String data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                     InvalidKeyException, 
                                                                     IllegalStateException, 
                                                                     UnsupportedEncodingException {
-        SecretKey key = new SecretKeySpec(keyByte, ALGORITHM);//»¹Ô­ÃÜÔ¿
+        SecretKey key = new SecretKeySpec(keyByte, ALGORITHM);//è¿˜åŽŸå¯†é’¥
         Mac mac = Mac.getInstance(key.getAlgorithm());
-        mac.init(key);//ÎªmacÊµÀý³õÊ¼»¯ÃÜÔ¿
+        mac.init(key);//ä¸ºmacå®žä¾‹åˆå§‹åŒ–å¯†é’¥
         return mac.doFinal(data.getBytes(ENCODING));
     }
     
     /**
-     * HmacMD5¼ÓÃÜ£¬²¢×ªÎª16½øÖÆ
+     * HmacMD5åŠ å¯†ï¼Œå¹¶è½¬ä¸º16è¿›åˆ¶
      */
     public static String encodeHmacMD5Hex(String data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                               UnsupportedEncodingException, 
                                                                               InvalidKeyException, 
                                                                               IllegalStateException {
         byte[] encodedByte = encode(data, keyByte);
-        return new String(Hex.encode(encodedByte));//½èÖúBC
-        //return new String(org.apache.commons.codec.binary.Hex.encodeHexString(encodedByte));//½èÖúCC
+        return new String(Hex.encode(encodedByte));//å€ŸåŠ©BC
+        //return new String(org.apache.commons.codec.binary.Hex.encodeHexString(encodedByte));//å€ŸåŠ©CC
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      * @throws IllegalStateException 
      * @throws InvalidKeyException 
      */
@@ -64,23 +64,23 @@ public class HmacMD5JDK {
                                                   NoSuchAlgorithmException, 
                                                   InvalidKeyException, 
                                                   IllegalStateException {
-        String data = "ÕÒÒ»¸öºÃ¹ÃÄï×öÀÏÆÅÊÇÎÒµÄÃÎ Ïë!";
-        /*************²âÊÔencode()**************/
-        System.out.println("Ô­ÎÄ-->"+data);
+        String data = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜åšè€å©†æ˜¯æˆ‘çš„æ¢¦ æƒ³!";
+        /*************æµ‹è¯•encode()**************/
+        System.out.println("åŽŸæ–‡-->"+data);
         byte[] keyByte = HmacMD5JDK.getKey(); 
         byte[] encodedByte = HmacMD5JDK.encode(data, keyByte);
-        System.out.println("¼ÓÃÜºó-->"+encodedByte);
+        System.out.println("åŠ å¯†åŽ-->"+encodedByte);
         byte[] encodedByte2 = HmacMD5JDK.encode(data, keyByte);
-        System.out.println("¼ÓÃÜºó-->"+encodedByte2);
+        System.out.println("åŠ å¯†åŽ-->"+encodedByte2);
         for(int i=0;i<encodedByte.length;i++){
             System.out.println(encodedByte[i]==encodedByte2[i]);
         }
-        /*************²âÊÔencodeHmacMD5Hex()**************/
-        System.out.println("Ô­ÎÄ-->"+data);
+        /*************æµ‹è¯•encodeHmacMD5Hex()**************/
+        System.out.println("åŽŸæ–‡-->"+data);
         String encodedStr = HmacMD5JDK.encodeHmacMD5Hex(data, keyByte);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr);
         String encodedStr2 = HmacMD5JDK.encodeHmacMD5Hex(data, keyByte);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr2);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr2);
         System.out.println(encodedStr.equals(encodedStr2));
     }
 }

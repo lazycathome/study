@@ -4,19 +4,19 @@ package cn.bigdb.bc;
 import java.io.UnsupportedEncodingException;
 import org.bouncycastle.util.encoders.UrlBase64;
 /**
- * »ùÓÚBCµÄURLBase64¼ÓÃÜ
+ * åŸºäºŽBCçš„URLBase64åŠ å¯†
  */
 public class URLBase64CoderBC {
     private static final String ENCODING = "UTF-8";
     /**
-     * URLBase64¼ÓÃÜ
+     * URLBase64åŠ å¯†
      */
     public static String encode(String data) throws UnsupportedEncodingException{
         byte[] encodedByte = UrlBase64.encode(data.getBytes(ENCODING));
         return new String(encodedByte, ENCODING);
     }
     /**
-     * URLBase64½âÃÜ
+     * URLBase64è§£å¯†
      */
     public static String decode(String data) throws UnsupportedEncodingException{
         byte[] decodedByte = UrlBase64.decode(data.getBytes(ENCODING));
@@ -24,17 +24,17 @@ public class URLBase64CoderBC {
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      * @param args
      * @throws UnsupportedEncodingException 
      */
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String data = "ÕÒÒ»¸öºÃ¹ÃÄï×öÀÏÆÅÊÇÎÒµÄÃÎ Ïë£¡";
-        System.out.println("Ô­ÎÄ-->"+data);
+        String data = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜åšè€å©†æ˜¯æˆ‘çš„æ¢¦ æƒ³ï¼";
+        System.out.println("åŽŸæ–‡-->"+data);
         String encodedStr = URLBase64CoderBC.encode(data);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr);
         String decodedStr = URLBase64CoderBC.decode(encodedStr);
-        System.out.println("½âÃÜºó-->"+decodedStr);
+        System.out.println("è§£å¯†åŽ-->"+decodedStr);
         System.out.println(data.equals(decodedStr));
     }
 }

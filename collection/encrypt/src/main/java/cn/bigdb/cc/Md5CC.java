@@ -4,49 +4,49 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import org.apache.commons.codec.digest.DigestUtils;
 /**
- * »ùÓÚCommons CodecµÄmd5Ëã·¨
+ * åŸºäºŽCommons Codecçš„md5ç®—æ³•
  */
 public class Md5CC {
     private static final String ENCODING = "UTF-8";
     
     /**
-     * MD5¼ÓÃÜ,¼ÓÃÜºóµÄ½á¹ûÎª¶þ½øÖÆ×Ö½ÚÊý×é
+     * MD5åŠ å¯†,åŠ å¯†åŽçš„ç»“æžœä¸ºäºŒè¿›åˆ¶å­—èŠ‚æ•°ç»„
      */
     public static byte[] encode(String data) throws NoSuchAlgorithmException,UnsupportedEncodingException {
         return DigestUtils.md5(data.getBytes(ENCODING));
     }
     
     /**
-     *MD5¼ÓÃÜ,¼ÓÃÜºóµÄ½á¹ûÎª¶þ½øÖÆ×Ö½ÚÊý×é£¬²¢ÇÒÔÚÕâÀï½«¶þ½øÖÆ×Ö½ÚÊý×é×ªÎªÁË32Î»µÄ16½øÖÆ
+     *MD5åŠ å¯†,åŠ å¯†åŽçš„ç»“æžœä¸ºäºŒè¿›åˆ¶å­—èŠ‚æ•°ç»„ï¼Œå¹¶ä¸”åœ¨è¿™é‡Œå°†äºŒè¿›åˆ¶å­—èŠ‚æ•°ç»„è½¬ä¸ºäº†32ä½çš„16è¿›åˆ¶
      */
     public static String encodeMd5Hex(String data) throws NoSuchAlgorithmException,UnsupportedEncodingException {
-        return new String(DigestUtils.md5Hex(data.getBytes(ENCODING)));//ÕâÀïÖ±½ÓÊ¹ÓÃnew String(encodedByte,"UTF-8")²»ÐÐ
+        return new String(DigestUtils.md5Hex(data.getBytes(ENCODING)));//è¿™é‡Œç›´æŽ¥ä½¿ç”¨new String(encodedByte,"UTF-8")ä¸è¡Œ
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      * @param args
      * @throws UnsupportedEncodingException 
      * @throws NoSuchAlgorithmException 
      */
     public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         
-        String data = "ÕÒÒ»¸öºÃ¹ÃÄï×öÀÏÆÅÊÇÎÒµÄÃÎ Ïë!";
-        /*************²âÊÔencode()**************/
-        System.out.println("Ô­ÎÄ-->"+data);
+        String data = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜åšè€å©†æ˜¯æˆ‘çš„æ¢¦ æƒ³!";
+        /*************æµ‹è¯•encode()**************/
+        System.out.println("åŽŸæ–‡-->"+data);
         byte[] encodedByte = Md5CC.encode(data);
-        System.out.println("¼ÓÃÜºó-->"+encodedByte);
+        System.out.println("åŠ å¯†åŽ-->"+encodedByte);
         byte[] encodedByte2 = Md5CC.encode(data);
-        System.out.println("¼ÓÃÜºó-->"+encodedByte2);
+        System.out.println("åŠ å¯†åŽ-->"+encodedByte2);
         for(int i=0;i<encodedByte.length;i++){
             System.out.println(encodedByte[i]==encodedByte2[i]);
         }
-        /*************²âÊÔencodeMd5Hex()**************/
-        System.out.println("Ô­ÎÄ-->"+data);
+        /*************æµ‹è¯•encodeMd5Hex()**************/
+        System.out.println("åŽŸæ–‡-->"+data);
         String encodedStr = Md5CC.encodeMd5Hex(data);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr);
         String encodedStr2 = Md5CC.encodeMd5Hex(data);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr2);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr2);
         System.out.println(encodedStr.equals(encodedStr2));
     }
 }

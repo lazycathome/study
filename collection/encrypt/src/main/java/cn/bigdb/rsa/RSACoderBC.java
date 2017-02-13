@@ -17,55 +17,55 @@ import java.security.spec.X509EncodedKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- * »ùÓÚBCµÄRSAÊý×ÖÇ©ÃûËã·¨
+ * åŸºäºŽBCçš„RSAæ•°å­—ç­¾åç®—æ³•
  */
 public class RSACoderBC {
     private static final String ENCODING = "UTF-8";
-    private static final String KEY_ALGORITHM = "RSA";//·Ç¶Ô³Æ¼ÓÃÜÃÜÔ¿Ëã·¨
-    private static final String SIGNATURE_ALGORITHM = "MD5withRSA";//Ö¸¶¨Êý×ÖÇ©ÃûËã·¨£¨¿ÉÒÔ»»³ÉSHA1withRSA»òSHA256withRSA£©
-    private static final int KEY_SIZE = 512;//·Ç¶Ô³ÆÃÜÔ¿³¤¶È£¨512~1024Ö®¼äµÄ64µÄÕûÊý±¶£©
+    private static final String KEY_ALGORITHM = "RSA";//éžå¯¹ç§°åŠ å¯†å¯†é’¥ç®—æ³•
+    private static final String SIGNATURE_ALGORITHM = "MD5withRSA";//æŒ‡å®šæ•°å­—ç­¾åç®—æ³•ï¼ˆå¯ä»¥æ¢æˆSHA1withRSAæˆ–SHA256withRSAï¼‰
+    private static final int KEY_SIZE = 512;//éžå¯¹ç§°å¯†é’¥é•¿åº¦ï¼ˆ512~1024ä¹‹é—´çš„64çš„æ•´æ•°å€ï¼‰
     
     /**
-     * Éú³É·¢ËÍ·½ÃÜÔ¿¶Ô
+     * ç”Ÿæˆå‘é€æ–¹å¯†é’¥å¯¹
      */
     public static KeyPair initKey() throws NoSuchAlgorithmException{
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);//ÃÜÔ¿¶ÔÉú³ÉÆ÷
-        keyPairGenerator.initialize(KEY_SIZE);//Ö¸¶¨ÃÜÔ¿³¤¶È
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();//Éú³ÉÃÜÔ¿¶Ô
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);//å¯†é’¥å¯¹ç”Ÿæˆå™¨
+        keyPairGenerator.initialize(KEY_SIZE);//æŒ‡å®šå¯†é’¥é•¿åº¦
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();//ç”Ÿæˆå¯†é’¥å¯¹
         return keyPair;
     }
     
     /**
-     * »¹Ô­¹«Ô¿
-     * @param pubKey ¶þ½øÖÆ¹«Ô¿
+     * è¿˜åŽŸå…¬é’¥
+     * @param pubKey äºŒè¿›åˆ¶å…¬é’¥
      */
     public static PublicKey toPublicKey(byte[] pubKey) throws NoSuchAlgorithmException, 
                                                               InvalidKeySpecException{
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);//ÃÜÔ¿¹¤³§
-        return keyFactory.generatePublic(new X509EncodedKeySpec(pubKey));//»¹Ô­¹«Ô¿
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);//å¯†é’¥å·¥åŽ‚
+        return keyFactory.generatePublic(new X509EncodedKeySpec(pubKey));//è¿˜åŽŸå…¬é’¥
     }
     
     /**
-     * »¹Ô­Ë½Ô¿
-     * @param priKey ¶þ½øÖÆË½Ô¿
+     * è¿˜åŽŸç§é’¥
+     * @param priKey äºŒè¿›åˆ¶ç§é’¥
      */
     public static PrivateKey toPrivateKey(byte[] priKey) throws NoSuchAlgorithmException, 
                                                                 InvalidKeySpecException{
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);//ÃÜÔ¿¹¤³§
-        return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(priKey));//»¹Ô­Ë½Ô¿
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);//å¯†é’¥å·¥åŽ‚
+        return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(priKey));//è¿˜åŽŸç§é’¥
     }
     
     /**
-     * Ë½Ô¿¼ÓÃÜ(Ç©Ãû)
-     * @param data     ´ý¼ÓÃÜÊý¾Ý
-     * @param keyByte  Ë½Ô¿
+     * ç§é’¥åŠ å¯†(ç­¾å)
+     * @param data     å¾…åŠ å¯†æ•°æ®
+     * @param keyByte  ç§é’¥
      */
     public static byte[] encryptPriKey(String data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                            InvalidKeySpecException, 
                                                                            InvalidKeyException, 
                                                                            SignatureException, 
                                                                            UnsupportedEncodingException {
-        PrivateKey priKey = toPrivateKey(keyByte);//»¹Ô­Ë½Ô¿
+        PrivateKey priKey = toPrivateKey(keyByte);//è¿˜åŽŸç§é’¥
 
         Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
         signature.initSign(priKey);
@@ -75,17 +75,17 @@ public class RSACoderBC {
     }
     
     /**
-     * ¹«Ô¿½âÃÜ(ÑéÖ¤)
-     * @param data        Ô­ÎÄ£¨´ý¼ÓÃÜÊý¾Ý£¬Ò²³ÉÎª¡°´ýÐ£ÑéÊý¾Ý¡±£©
-     * @param keyByte    ¹«Ô¿
-     * @param sign        ÃÜÎÄ£¨Ò²³Æ×÷¡°Ç©Ãû¡±£©
+     * å…¬é’¥è§£å¯†(éªŒè¯)
+     * @param data        åŽŸæ–‡ï¼ˆå¾…åŠ å¯†æ•°æ®ï¼Œä¹Ÿæˆä¸ºâ€œå¾…æ ¡éªŒæ•°æ®â€ï¼‰
+     * @param keyByte    å…¬é’¥
+     * @param sign        å¯†æ–‡ï¼ˆä¹Ÿç§°ä½œâ€œç­¾åâ€ï¼‰
      */
     public static boolean decryptPubKey(String data, byte[] keyByte, byte[] sign) throws NoSuchAlgorithmException, 
                                                                                          InvalidKeySpecException, 
                                                                                          InvalidKeyException, 
                                                                                          SignatureException, 
                                                                                          UnsupportedEncodingException {
-        PublicKey pubKey = toPublicKey(keyByte);//»¹Ô­¹«Ô¿
+        PublicKey pubKey = toPublicKey(keyByte);//è¿˜åŽŸå…¬é’¥
         
         Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
         signature.initVerify(pubKey);
@@ -95,44 +95,44 @@ public class RSACoderBC {
     }
     
     /**
-     * »ñÈ¡¹«Ô¿
+     * èŽ·å–å…¬é’¥
      */
     public static byte[] getPublicKey(KeyPair keyPair){
         return keyPair.getPublic().getEncoded();
     }
     
     /**
-     * »ñÈ¡Ë½Ô¿
+     * èŽ·å–ç§é’¥
      */
     public static byte[] getPrivateKey(KeyPair keyPair){
         return keyPair.getPrivate().getEncoded();
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      */
     public static void main(String[] args) throws NoSuchAlgorithmException, 
                                                   InvalidKeyException, 
                                                   InvalidKeySpecException, 
                                                   SignatureException, 
                                                   UnsupportedEncodingException {
-        byte[] pubKey1;//¼×·½¹«Ô¿
-        byte[] priKey1;//¼×·½Ë½Ô¿
+        byte[] pubKey1;//ç”²æ–¹å…¬é’¥
+        byte[] priKey1;//ç”²æ–¹ç§é’¥
         
-        /*********************²âÊÔÊÇ·ñ¿ÉÒÔÕýÈ·Éú³ÉÒÔÉÏ2¸ökey*********************/
-        KeyPair keyPair1 = RSACoderBC.initKey();//Éú³É¼×·½ÃÜÔ¿¶Ô
+        /*********************æµ‹è¯•æ˜¯å¦å¯ä»¥æ­£ç¡®ç”Ÿæˆä»¥ä¸Š2ä¸ªkey*********************/
+        KeyPair keyPair1 = RSACoderBC.initKey();//ç”Ÿæˆç”²æ–¹å¯†é’¥å¯¹
         pubKey1 = RSACoderBC.getPublicKey(keyPair1);
         priKey1 = RSACoderBC.getPrivateKey(keyPair1);
         
-        System.out.println("¼×·½¹«Ô¿pubKey1-->"+Base64.encodeBase64String(pubKey1)+"@@pubKey1.length-->"+pubKey1.length);
-        System.out.println("¼×·½Ë½Ô¿priKey1-->"+Base64.encodeBase64String(priKey1)+"@@priKey1.length-->"+priKey1.length);
+        System.out.println("ç”²æ–¹å…¬é’¥pubKey1-->"+Base64.encodeBase64String(pubKey1)+"@@pubKey1.length-->"+pubKey1.length);
+        System.out.println("ç”²æ–¹ç§é’¥priKey1-->"+Base64.encodeBase64String(priKey1)+"@@priKey1.length-->"+priKey1.length);
         
-        /*********************²âÊÔ¼×·½Ê¹ÓÃË½Ô¿¼ÓÃÜÊý¾ÝÏòÒÒ·½·¢ËÍ£¬ÒÒ·½Ê¹ÓÃ¹«Ô¿½âÃÜÊý¾Ý*********************/
-        System.out.println("¼×·½-->ÒÒ·½");
-        String data = "ÕÒÒ»¸öºÃ¹ÃÄï°¡£¡ÄãºÃÂð£¬º¢×Ó";
-        byte[] encodeStr = RSACoderBC.encryptPriKey(data, priKey1);//¼ÓÃÜ£¨Ç©Ãû£©
-        System.out.println("¼×·½¼ÓÃÜºóµÄÊý¾Ý-->"+Base64.encodeBase64String(encodeStr)+"@@encodeStr.length-->"+encodeStr.length);
+        /*********************æµ‹è¯•ç”²æ–¹ä½¿ç”¨ç§é’¥åŠ å¯†æ•°æ®å‘ä¹™æ–¹å‘é€ï¼Œä¹™æ–¹ä½¿ç”¨å…¬é’¥è§£å¯†æ•°æ®*********************/
+        System.out.println("ç”²æ–¹-->ä¹™æ–¹");
+        String data = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜å•Šï¼ä½ å¥½å—ï¼Œå­©å­";
+        byte[] encodeStr = RSACoderBC.encryptPriKey(data, priKey1);//åŠ å¯†ï¼ˆç­¾åï¼‰
+        System.out.println("ç”²æ–¹åŠ å¯†åŽçš„æ•°æ®-->"+Base64.encodeBase64String(encodeStr)+"@@encodeStr.length-->"+encodeStr.length);
         boolean decodeStr = RSACoderBC.decryptPubKey(data, pubKey1, encodeStr);
-        System.out.println("ÒÒ·½¼ìÑé½á¹û-->"+decodeStr);
+        System.out.println("ä¹™æ–¹æ£€éªŒç»“æžœ-->"+decodeStr);
     }
 }

@@ -4,19 +4,19 @@ package cn.bigdb.cc;
 import java.io.UnsupportedEncodingException;
 import org.apache.commons.codec.binary.Base64;
 /**
- * »ùÓÚCommons CodecµÄURLBase64¼ÓÃÜ
+ * åŸºäºŽCommons Codecçš„URLBase64åŠ å¯†
  */
 public class URLBase64CoderCC {
     private static final String ENCODING = "UTF-8";
     /**
-     * URLBase64¼ÓÃÜ
+     * URLBase64åŠ å¯†
      */
     public static String encode(String data) throws UnsupportedEncodingException{
         byte[] encodedByte = Base64.encodeBase64URLSafe(data.getBytes(ENCODING));
         return new String(encodedByte, ENCODING);
     }
     /**
-     * URLBase64½âÃÜ
+     * URLBase64è§£å¯†
      */
     public static String decode(String data) throws UnsupportedEncodingException{
         byte[] decodedByte = Base64.decodeBase64(data.getBytes(ENCODING));
@@ -24,17 +24,17 @@ public class URLBase64CoderCC {
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      * @param args
      * @throws UnsupportedEncodingException 
      */
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String data = "ÕÒÒ»¸öºÃ¹ÃÄï×öÀÏÆÅÊÇÎÒµÄÃÎ Ïë£¡";
-        System.out.println("Ô­ÎÄ-->"+data);
+        String data = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜åšè€å©†æ˜¯æˆ‘çš„æ¢¦ æƒ³ï¼";
+        System.out.println("åŽŸæ–‡-->"+data);
         String encodedStr = URLBase64CoderCC.encode(data);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr);
         String decodedStr = URLBase64CoderCC.decode(encodedStr);
-        System.out.println("½âÃÜºó-->"+decodedStr);
+        System.out.println("è§£å¯†åŽ-->"+decodedStr);
         System.out.println(data.equals(decodedStr));
     }
 }

@@ -22,34 +22,34 @@ import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
- * »ùÓÚBCµÄIDEAËã·¨£¬¹¤×÷Ä£Ê½Ö»ÓÐECB
+ * åŸºäºŽBCçš„IDEAç®—æ³•ï¼Œå·¥ä½œæ¨¡å¼åªæœ‰ECB
  */
 public class IDEABC {
     private static final String ENCODING = "UTF-8";
-    private static final String KEY_ALGORITHM = "IDEA";//²úÉúÃÜÔ¿µÄËã·¨
-    private static final String CIPHER_ALGORITHM = "IDEA/ECB/PKCS5Padding";//¼Ó½âÃÜËã·¨ ¸ñÊ½£ºËã·¨/¹¤×÷Ä£Ê½/Ìî³äÄ£Ê½
+    private static final String KEY_ALGORITHM = "IDEA";//äº§ç”Ÿå¯†é’¥çš„ç®—æ³•
+    private static final String CIPHER_ALGORITHM = "IDEA/ECB/PKCS5Padding";//åŠ è§£å¯†ç®—æ³• æ ¼å¼ï¼šç®—æ³•/å·¥ä½œæ¨¡å¼/å¡«å……æ¨¡å¼
     /**
-     * ²úÉúÃÜÔ¿
+     * äº§ç”Ÿå¯†é’¥
      */
     public static byte[] getKey() throws NoSuchAlgorithmException{
-        Security.addProvider(new BouncyCastleProvider());//ÔÚBCÖÐÓÃ£¬JDKÏÂÈ¥³ý
+        Security.addProvider(new BouncyCastleProvider());//åœ¨BCä¸­ç”¨ï¼ŒJDKä¸‹åŽ»é™¤
         KeyGenerator keyGenerator = KeyGenerator.getInstance(KEY_ALGORITHM);
-        keyGenerator.init(128);//³õÊ¼»¯ÃÜÔ¿³¤¶È,128
-        SecretKey key =keyGenerator.generateKey();//²úÉúÃÜÔ¿
+        keyGenerator.init(128);//åˆå§‹åŒ–å¯†é’¥é•¿åº¦,128
+        SecretKey key =keyGenerator.generateKey();//äº§ç”Ÿå¯†é’¥
         return key.getEncoded();
     }
     
     /**
-     * »¹Ô­ÃÜÔ¿£º¶þ½øÖÆ×Ö½ÚÊý×é×ª»»ÎªJava¶ÔÏó
+     * è¿˜åŽŸå¯†é’¥ï¼šäºŒè¿›åˆ¶å­—èŠ‚æ•°ç»„è½¬æ¢ä¸ºJavaå¯¹è±¡
      */
     public static Key toKey(byte[] keyByte){
         return new SecretKeySpec(keyByte, KEY_ALGORITHM);
     }
     
     /**
-     * IDEA¼ÓÃÜ
-     * @param data     ´ø¼ÓÃÜÊý¾Ý
-     * @param keyByte  ÃÜÔ¿
+     * IDEAåŠ å¯†
+     * @param data     å¸¦åŠ å¯†æ•°æ®
+     * @param keyByte  å¯†é’¥
      */
     public static byte[] encrypt(String data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                      NoSuchProviderException, 
@@ -58,14 +58,14 @@ public class IDEABC {
                                                                      IllegalBlockSizeException, 
                                                                      BadPaddingException, 
                                                                      UnsupportedEncodingException {
-        Key key = toKey(keyByte);//»¹Ô­ÃÜÔ¿
-        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM,"BC");//BCÏÂÓÃ
-        cipher.init(Cipher.ENCRYPT_MODE, key);//ÉèÖÃ¼ÓÃÜÄ£Ê½²¢ÇÒ³õÊ¼»¯key
+        Key key = toKey(keyByte);//è¿˜åŽŸå¯†é’¥
+        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM,"BC");//BCä¸‹ç”¨
+        cipher.init(Cipher.ENCRYPT_MODE, key);//è®¾ç½®åŠ å¯†æ¨¡å¼å¹¶ä¸”åˆå§‹åŒ–key
         return cipher.doFinal(data.getBytes(ENCODING));
     }
     
     /**
-     * IDEA¼ÓÃÜ£¬²¢×ªÎª16½øÖÆ×Ö·û´®»òBase64±àÂë×Ö·û´®
+     * IDEAåŠ å¯†ï¼Œå¹¶è½¬ä¸º16è¿›åˆ¶å­—ç¬¦ä¸²æˆ–Base64ç¼–ç å­—ç¬¦ä¸²
      */
     public static String encryptIDEAHex(String data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                            NoSuchProviderException, 
@@ -75,15 +75,15 @@ public class IDEABC {
                                                                            BadPaddingException, 
                                                                            UnsupportedEncodingException {
         byte[] encodedByte = encrypt(data, keyByte);
-        //return new String(Hex.encode(encodedByte));//½èÖúBC
-        //return new String(org.apache.commons.codec.binary.Hex.encodeHexString(encodedByte));//½èÖúCC
-        return Base64.encodeBase64String(encodedByte);//½èÖúCCµÄBase64±àÂë
+        //return new String(Hex.encode(encodedByte));//å€ŸåŠ©BC
+        //return new String(org.apache.commons.codec.binary.Hex.encodeHexString(encodedByte));//å€ŸåŠ©CC
+        return Base64.encodeBase64String(encodedByte);//å€ŸåŠ©CCçš„Base64ç¼–ç 
     }
     
     /**
-     * IDEA½âÃÜ
-     * @param data        ´ý½âÃÜÊý¾ÝÎª×Ö½ÚÊý×é
-     * @param keyByte    ÃÜÔ¿
+     * IDEAè§£å¯†
+     * @param data        å¾…è§£å¯†æ•°æ®ä¸ºå­—èŠ‚æ•°ç»„
+     * @param keyByte    å¯†é’¥
      */
     public static byte[] decrypt(byte[] data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                      NoSuchProviderException, 
@@ -91,16 +91,16 @@ public class IDEABC {
                                                                      InvalidKeyException, 
                                                                      IllegalBlockSizeException, 
                                                                      BadPaddingException {
-        Key key = toKey(keyByte);//»¹Ô­ÃÜÔ¿
-        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM,"BC");//BCÏÂÓÃ
+        Key key = toKey(keyByte);//è¿˜åŽŸå¯†é’¥
+        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM,"BC");//BCä¸‹ç”¨
         cipher.init(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(data);
     }
     
     /**
-     * IDEA½âÃÜ
-     * @param data        ´ý½âÃÜÊý¾ÝÎª×Ö·û´®
-     * @param keyByte    ÃÜÔ¿
+     * IDEAè§£å¯†
+     * @param data        å¾…è§£å¯†æ•°æ®ä¸ºå­—ç¬¦ä¸²
+     * @param keyByte    å¯†é’¥
      */
     public static byte[] decrypt(String data, byte[] keyByte) throws NoSuchAlgorithmException, 
                                                                      NoSuchProviderException, 
@@ -108,14 +108,14 @@ public class IDEABC {
                                                                      InvalidKeyException, 
                                                                      IllegalBlockSizeException, 
                                                                      BadPaddingException  {
-        Key key = toKey(keyByte);//»¹Ô­ÃÜÔ¿
-        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM,"BC");//BCÏÂÓÃ
+        Key key = toKey(keyByte);//è¿˜åŽŸå¯†é’¥
+        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM,"BC");//BCä¸‹ç”¨
         cipher.init(Cipher.DECRYPT_MODE, key);
-        return cipher.doFinal(Base64.decodeBase64(data));//×¢Òâdata²»¿ÉÒÔÖ±½Ó²ÉÓÃdata.getByte()·½·¨×ª»¯Îª×Ö½ÚÊý×é£¬·ñÔò»áÅ×Òì³£
+        return cipher.doFinal(Base64.decodeBase64(data));//æ³¨æ„dataä¸å¯ä»¥ç›´æŽ¥é‡‡ç”¨data.getByte()æ–¹æ³•è½¬åŒ–ä¸ºå­—èŠ‚æ•°ç»„ï¼Œå¦åˆ™ä¼šæŠ›å¼‚å¸¸
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      */
     public static void main(String[] args) throws NoSuchAlgorithmException, 
                                                   InvalidKeyException, 
@@ -126,31 +126,31 @@ public class IDEABC {
                                                   UnsupportedEncodingException, 
                                                   NoSuchProviderException, 
                                                   InvalidAlgorithmParameterException {
-        String data = "ÕÒÒ»¸öºÃ¹ÃÄï×öÀÏÆÅÊÇÎÒµÄÃÎ Ïë!";
-        /*************²âÊÔencrypt()¡¢decrypt()**************/
-        System.out.println("Ô­ÎÄ-->"+data);
+        String data = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜åšè€å©†æ˜¯æˆ‘çš„æ¢¦ æƒ³!";
+        /*************æµ‹è¯•encrypt()ã€decrypt()**************/
+        System.out.println("åŽŸæ–‡-->"+data);
         byte[] keyByte = IDEABC.getKey(); 
-        System.out.println("ÃÜÔ¿-->"+Base64.encodeBase64String(keyByte));//ÕâÀï½«¶þ½øÖÆµÄÃÜÔ¿Ê¹ÓÃbase64¼ÓÃÜ±£´æ£¬ÕâÒ²ÊÇÔÚÊµ¼ÊÖÐÊ¹ÓÃµÄ·½Ê½
+        System.out.println("å¯†é’¥-->"+Base64.encodeBase64String(keyByte));//è¿™é‡Œå°†äºŒè¿›åˆ¶çš„å¯†é’¥ä½¿ç”¨base64åŠ å¯†ä¿å­˜ï¼Œè¿™ä¹Ÿæ˜¯åœ¨å®žé™…ä¸­ä½¿ç”¨çš„æ–¹å¼
         byte[] encodedByte = IDEABC.encrypt(data, keyByte);
-        System.out.println("¼ÓÃÜºó-->"+encodedByte);
+        System.out.println("åŠ å¯†åŽ-->"+encodedByte);
         byte[] encodedByte2 = IDEABC.encrypt(data, keyByte);
-        System.out.println("¼ÓÃÜºó-->"+encodedByte2);
+        System.out.println("åŠ å¯†åŽ-->"+encodedByte2);
         byte[] decodedByte = IDEABC.decrypt(encodedByte, keyByte);
-        System.out.println("½âÃÜºó-->"+decodedByte);
+        System.out.println("è§£å¯†åŽ-->"+decodedByte);
         for(int i=0;i<encodedByte.length;i++){
             System.out.println(encodedByte[i]==encodedByte2[i]);
         }
-        /*************²âÊÔencryptIDEAHex()¡¢decrypt()**************/
-        System.out.println("Ô­ÎÄ-->"+data);
+        /*************æµ‹è¯•encryptIDEAHex()ã€decrypt()**************/
+        System.out.println("åŽŸæ–‡-->"+data);
         byte[] keyByte3 = IDEABC.getKey(); 
-        System.out.println("ÃÜÔ¿-->"+Base64.encodeBase64String(keyByte3));//ÕâÀï½«¶þ½øÖÆµÄÃÜÔ¿Ê¹ÓÃbase64¼ÓÃÜ±£´æ£¬ÕâÒ²ÊÇÔÚÊµ¼ÊÖÐÊ¹ÓÃµÄ·½Ê½
+        System.out.println("å¯†é’¥-->"+Base64.encodeBase64String(keyByte3));//è¿™é‡Œå°†äºŒè¿›åˆ¶çš„å¯†é’¥ä½¿ç”¨base64åŠ å¯†ä¿å­˜ï¼Œè¿™ä¹Ÿæ˜¯åœ¨å®žé™…ä¸­ä½¿ç”¨çš„æ–¹å¼
         String encodedStr = IDEABC.encryptIDEAHex(data, keyByte3);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr);
         String encodedByte4 = IDEABC.encryptIDEAHex(data, keyByte3);
-        System.out.println("¼ÓÃÜºó-->"+encodedByte4);
+        System.out.println("åŠ å¯†åŽ-->"+encodedByte4);
         byte[] decodedByte3 = IDEABC.decrypt(Base64.decodeBase64(encodedStr), keyByte3);
-        System.out.println("½âÃÜByte[]ºó-->"+decodedByte3);
+        System.out.println("è§£å¯†Byte[]åŽ-->"+decodedByte3);
         byte[] decodedByte4 = IDEABC.decrypt(encodedStr, keyByte3);
-        System.out.println("½âÃÜStringºó-->"+decodedByte4);
+        System.out.println("è§£å¯†StringåŽ-->"+decodedByte4);
     }
 }

@@ -1,16 +1,15 @@
 package cn.bigdb.cc;
-
 import java.io.UnsupportedEncodingException;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- * »ùÓÚCommons CodecµÄBase64¼ÓÃÜ
+ * åŸºäºŽCommons Codecçš„Base64åŠ å¯†
  */
 public class Base64CoderCC {
     private static final String ENCODING = "UTF-8";
     
     /**
-     * Ò»°ãBase64¼ÓÃÜ
+     * ä¸€èˆ¬Base64åŠ å¯†
      */
     public static String encode(String data) throws UnsupportedEncodingException{
         byte[] encodedByte = Base64.encodeBase64(data.getBytes(ENCODING));
@@ -18,19 +17,19 @@ public class Base64CoderCC {
     }
     
     /**
-     * °²È«Base64¼ÓÃÜ
+     * å®‰å…¨Base64åŠ å¯†
      */
     public static String encodeSafe(String data) throws UnsupportedEncodingException{
         /*
-         * ×¢Òâ£ºÕâÀï²ÉÓÃµÄencodeBase64(byte[] bytes, boolean arg1)
-         * arg1ÎªtrueÊ±£¬¼ÓÃÜºóµÄ×Ö·û´®Ã¿ÐÐÎª76¸ö×Ö·û£¬²»ÂÛÃ¿ÐÐ¹»²»¹»76¸ö×Ö·û£¬¶¼ÒªÔÚÐÐÎ²Ìí¼Ó¡°\r\n¡±
+         * æ³¨æ„ï¼šè¿™é‡Œé‡‡ç”¨çš„encodeBase64(byte[] bytes, boolean arg1)
+         * arg1ä¸ºtrueæ—¶ï¼ŒåŠ å¯†åŽçš„å­—ç¬¦ä¸²æ¯è¡Œä¸º76ä¸ªå­—ç¬¦ï¼Œä¸è®ºæ¯è¡Œå¤Ÿä¸å¤Ÿ76ä¸ªå­—ç¬¦ï¼Œéƒ½è¦åœ¨è¡Œå°¾æ·»åŠ â€œ\r\nâ€
          */
         byte[] encodedByte = Base64.encodeBase64(data.getBytes(ENCODING),true);
         return new String(encodedByte, ENCODING);
     }
     
     /**
-     * Base64½âÃÜ
+     * Base64è§£å¯†
      */
     public static String decode(String data) throws UnsupportedEncodingException{
         byte[] decodedByte = Base64.decodeBase64(data.getBytes(ENCODING));
@@ -38,27 +37,27 @@ public class Base64CoderCC {
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      * @param args
      * @throws UnsupportedEncodingException 
      */
     public static void main(String[] args) throws UnsupportedEncodingException {
-        /********************²âÊÔÒ»°ãencode*********************/
-        String data = "ÕÒÒ»¸öºÃ¹ÃÄï×öÀÏÆÅÊÇÎÒµÄÃÎ Ïë£¡";
-        System.out.println("Ô­ÎÄ-->"+data);
+        /********************æµ‹è¯•ä¸€èˆ¬encode*********************/
+        String data = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜åšè€å©†æ˜¯æˆ‘çš„æ¢¦ æƒ³ï¼";
+        System.out.println("åŽŸæ–‡-->"+data);
         String encodedStr = Base64CoderCC.encode(data);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr);
         String decodedStr = Base64CoderCC.decode(encodedStr);
-        System.out.println("½âÃÜºó-->"+decodedStr);
+        System.out.println("è§£å¯†åŽ-->"+decodedStr);
         System.out.println(data.equals(decodedStr));
         System.out.println("================================");
-        /********************²âÊÔ°²È«encode*********************/
-        String data2 = "ÕÒÒ»¸öºÃ¹ÃÄï×öÀÏÆÅÊÇÎÒµÄÃÎ Ïë£¡ÕÒÒ»¸öºÃ¹ÃÄï×öÀÏÆÅÊÇÎÒµÄÃÎ Ïë£¡";
-        System.out.println("Ô­ÎÄ-->"+data2);
+        /********************æµ‹è¯•å®‰å…¨encode*********************/
+        String data2 = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜åšè€å©†æ˜¯æˆ‘çš„æ¢¦ æƒ³ï¼æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜åšè€å©†æ˜¯æˆ‘çš„æ¢¦ æƒ³ï¼";
+        System.out.println("åŽŸæ–‡-->"+data2);
         String encodedStr2 = Base64CoderCC.encodeSafe(data2);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr2);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr2);
         String decodedStr2 = Base64CoderCC.decode(encodedStr2);
-        System.out.println("½âÃÜºó-->"+decodedStr2);
+        System.out.println("è§£å¯†åŽ-->"+decodedStr2);
         System.out.println(data2.equals(decodedStr2));
     }
 }

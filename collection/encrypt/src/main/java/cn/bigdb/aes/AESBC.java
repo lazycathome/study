@@ -23,35 +23,35 @@ import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
- * »ùÓÚBCµÄAESËã·¨£¬¹¤×÷Ä£Ê½²ÉÓÃCTR
+ * åŸºäºŽBCçš„AESç®—æ³•ï¼Œå·¥ä½œæ¨¡å¼é‡‡ç”¨CTR
  */
 public class AESBC {
     private static final String ENCODING = "UTF-8";
-    private static final String KEY_ALGORITHM = "AES";//²úÉúÃÜÔ¿µÄËã·¨
-    private static final String CIPHER_ALGORITHM = "AES/CTR/PKCS7Padding";//¼Ó½âÃÜËã·¨ ¸ñÊ½£ºËã·¨/¹¤×÷Ä£Ê½/Ìî³äÄ£Ê½ ×¢Òâ£ºECB²»Ê¹ÓÃIV²ÎÊý£¬CTRÊ¹ÓÃ
-    private static final byte[] IV = "zhaojigangzhaoji".getBytes();//×¢Òâ£ºÕâÀïÐèÒªÊÇÊ®Áù¸ö×Ö·û,ÓÃÓÚCTR
+    private static final String KEY_ALGORITHM = "AES";//äº§ç”Ÿå¯†é’¥çš„ç®—æ³•
+    private static final String CIPHER_ALGORITHM = "AES/CTR/PKCS7Padding";//åŠ è§£å¯†ç®—æ³• æ ¼å¼ï¼šç®—æ³•/å·¥ä½œæ¨¡å¼/å¡«å……æ¨¡å¼ æ³¨æ„ï¼šECBä¸ä½¿ç”¨IVå‚æ•°ï¼ŒCTRä½¿ç”¨
+    private static final byte[] IV = "zhaojigangzhaoji".getBytes();//æ³¨æ„ï¼šè¿™é‡Œéœ€è¦æ˜¯åå…­ä¸ªå­—ç¬¦,ç”¨äºŽCTR
     /**
-     * ²úÉúÃÜÔ¿
+     * äº§ç”Ÿå¯†é’¥
      */
     public static byte[] getKey() throws NoSuchAlgorithmException{
-        Security.addProvider(new BouncyCastleProvider());//¼ÓÈëBCProvider
+        Security.addProvider(new BouncyCastleProvider());//åŠ å…¥BCProvider
         KeyGenerator keyGenerator = KeyGenerator.getInstance(KEY_ALGORITHM);
-        keyGenerator.init(256);//³õÊ¼»¯ÃÜÔ¿³¤¶È,128,192,256£¨Ñ¡ÓÃ192ºÍ256µÄÊ±ºòÐèÒªÅäÖÃÎÞÕþ²ßÏÞÖÆÈ¨ÏÞÎÄ¼þ--JDK6£©
-        SecretKey key =keyGenerator.generateKey();//²úÉúÃÜÔ¿
+        keyGenerator.init(256);//åˆå§‹åŒ–å¯†é’¥é•¿åº¦,128,192,256ï¼ˆé€‰ç”¨192å’Œ256çš„æ—¶å€™éœ€è¦é…ç½®æ— æ”¿ç­–é™åˆ¶æƒé™æ–‡ä»¶--JDK6ï¼‰
+        SecretKey key =keyGenerator.generateKey();//äº§ç”Ÿå¯†é’¥
         return key.getEncoded();
     }
     
     /**
-     * »¹Ô­ÃÜÔ¿£º¶þ½øÖÆ×Ö½ÚÊý×é×ª»»ÎªJava¶ÔÏó
+     * è¿˜åŽŸå¯†é’¥ï¼šäºŒè¿›åˆ¶å­—èŠ‚æ•°ç»„è½¬æ¢ä¸ºJavaå¯¹è±¡
      */
     public static Key toKey(byte[] keyByte){
         return new SecretKeySpec(keyByte, KEY_ALGORITHM);
     }
     
     /**
-     * AES¼ÓÃÜ
-     * @param data     ´ø¼ÓÃÜÊý¾Ý
-     * @param keyByte  ÃÜÔ¿
+     * AESåŠ å¯†
+     * @param data     å¸¦åŠ å¯†æ•°æ®
+     * @param keyByte  å¯†é’¥
      */
     public static byte[] encrypt(String data, byte[] keyByte) throws InvalidKeyException, 
                                                                      NoSuchAlgorithmException, 
@@ -62,14 +62,14 @@ public class AESBC {
                                                                      UnsupportedEncodingException, 
                                                                      NoSuchProviderException, 
                                                                      InvalidAlgorithmParameterException{
-        Key key = toKey(keyByte);//»¹Ô­ÃÜÔ¿
-        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM,"BC");//Ê¹ÓÃBC
-        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(IV));//ÉèÖÃ¼ÓÃÜÄ£Ê½²¢ÇÒ³õÊ¼»¯key,¼ÓÈëIVÓÃÓÚBCÏÂµÄCTR
+        Key key = toKey(keyByte);//è¿˜åŽŸå¯†é’¥
+        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM,"BC");//ä½¿ç”¨BC
+        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(IV));//è®¾ç½®åŠ å¯†æ¨¡å¼å¹¶ä¸”åˆå§‹åŒ–key,åŠ å…¥IVç”¨äºŽBCä¸‹çš„CTR
         return cipher.doFinal(data.getBytes(ENCODING));
     }
     
     /**
-     * AES¼ÓÃÜ£¬²¢×ªÎª16½øÖÆ×Ö·û´®»òBase64±àÂë×Ö·û´®
+     * AESåŠ å¯†ï¼Œå¹¶è½¬ä¸º16è¿›åˆ¶å­—ç¬¦ä¸²æˆ–Base64ç¼–ç å­—ç¬¦ä¸²
      */
     public static String encryptAESHex(String data, byte[] keyByte) throws InvalidKeyException, 
                                                                            NoSuchAlgorithmException, 
@@ -81,15 +81,15 @@ public class AESBC {
                                                                            NoSuchProviderException, 
                                                                            InvalidAlgorithmParameterException {
         byte[] encodedByte = encrypt(data, keyByte);
-        //return new String(Hex.encode(encodedByte));//½èÖúBC
-        //return new String(org.apache.commons.codec.binary.Hex.encodeHexString(encodedByte));//½èÖúCC
-        return Base64.encodeBase64String(encodedByte);//½èÖúCCµÄBase64±àÂë
+        //return new String(Hex.encode(encodedByte));//å€ŸåŠ©BC
+        //return new String(org.apache.commons.codec.binary.Hex.encodeHexString(encodedByte));//å€ŸåŠ©CC
+        return Base64.encodeBase64String(encodedByte);//å€ŸåŠ©CCçš„Base64ç¼–ç 
     }
     
     /**
-     * AES½âÃÜ
-     * @param data        ´ý½âÃÜÊý¾ÝÎª×Ö½ÚÊý×é
-     * @param keyByte    ÃÜÔ¿
+     * AESè§£å¯†
+     * @param data        å¾…è§£å¯†æ•°æ®ä¸ºå­—èŠ‚æ•°ç»„
+     * @param keyByte    å¯†é’¥
      */
     public static byte[] decrypt(byte[] data, byte[] keyByte) throws InvalidKeyException, 
                                                                      NoSuchAlgorithmException, 
@@ -100,16 +100,16 @@ public class AESBC {
                                                                      UnsupportedEncodingException, 
                                                                      NoSuchProviderException, 
                                                                      InvalidAlgorithmParameterException {
-        Key key = toKey(keyByte);//»¹Ô­ÃÜÔ¿
+        Key key = toKey(keyByte);//è¿˜åŽŸå¯†é’¥
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM,"BC");
-        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(IV));//ÉèÖÃ¼ÓÃÜÄ£Ê½²¢ÇÒ³õÊ¼»¯key,¼ÓÈëIVÓÃÓÚBCÏÂµÄCTR
+        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(IV));//è®¾ç½®åŠ å¯†æ¨¡å¼å¹¶ä¸”åˆå§‹åŒ–key,åŠ å…¥IVç”¨äºŽBCä¸‹çš„CTR
         return cipher.doFinal(data);
     }
     
     /**
-     * AES½âÃÜ
-     * @param data        ´ý½âÃÜÊý¾ÝÎª×Ö·û´®
-     * @param keyByte    ÃÜÔ¿
+     * AESè§£å¯†
+     * @param data        å¾…è§£å¯†æ•°æ®ä¸ºå­—ç¬¦ä¸²
+     * @param keyByte    å¯†é’¥
      */
     public static byte[] decrypt(String data, byte[] keyByte) throws InvalidKeyException, 
                                                                      NoSuchAlgorithmException, 
@@ -120,14 +120,14 @@ public class AESBC {
                                                                      UnsupportedEncodingException, 
                                                                      NoSuchProviderException, 
                                                                      InvalidAlgorithmParameterException {
-        Key key = toKey(keyByte);//»¹Ô­ÃÜÔ¿
+        Key key = toKey(keyByte);//è¿˜åŽŸå¯†é’¥
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM,"BC");
-        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(IV));//ÉèÖÃ¼ÓÃÜÄ£Ê½²¢ÇÒ³õÊ¼»¯key,¼ÓÈëIVÓÃÓÚBCÏÂµÄCTR
+        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(IV));//è®¾ç½®åŠ å¯†æ¨¡å¼å¹¶ä¸”åˆå§‹åŒ–key,åŠ å…¥IVç”¨äºŽBCä¸‹çš„CTR
         return cipher.doFinal(Base64.decodeBase64(data));
     }
     
     /**
-     * ²âÊÔ
+     * æµ‹è¯•
      */
     public static void main(String[] args) throws NoSuchAlgorithmException, 
                                                   InvalidKeyException, 
@@ -138,31 +138,31 @@ public class AESBC {
                                                   UnsupportedEncodingException, 
                                                   NoSuchProviderException, 
                                                   InvalidAlgorithmParameterException {
-        String data = "ÕÒÒ»¸öºÃ¹ÃÄï×öÀÏÆÅÊÇÎÒµÄÃÎ Ïë!";
-        /*************²âÊÔencrypt()¡¢decrypt()**************/
-        System.out.println("Ô­ÎÄ-->"+data);
+        String data = "æ‰¾ä¸€ä¸ªå¥½å§‘å¨˜åšè€å©†æ˜¯æˆ‘çš„æ¢¦ æƒ³!";
+        /*************æµ‹è¯•encrypt()ã€decrypt()**************/
+        System.out.println("åŽŸæ–‡-->"+data);
         byte[] keyByte = AESBC.getKey(); 
-        System.out.println("ÃÜÔ¿-->"+Base64.encodeBase64String(keyByte));//ÕâÀï½«¶þ½øÖÆµÄÃÜÔ¿Ê¹ÓÃbase64¼ÓÃÜ±£´æ£¬ÕâÒ²ÊÇÔÚÊµ¼ÊÖÐÊ¹ÓÃµÄ·½Ê½
+        System.out.println("å¯†é’¥-->"+Base64.encodeBase64String(keyByte));//è¿™é‡Œå°†äºŒè¿›åˆ¶çš„å¯†é’¥ä½¿ç”¨base64åŠ å¯†ä¿å­˜ï¼Œè¿™ä¹Ÿæ˜¯åœ¨å®žé™…ä¸­ä½¿ç”¨çš„æ–¹å¼
         byte[] encodedByte = AESBC.encrypt(data, keyByte);
-        System.out.println("¼ÓÃÜºó-->"+encodedByte);
+        System.out.println("åŠ å¯†åŽ-->"+encodedByte);
         byte[] encodedByte2 = AESBC.encrypt(data, keyByte);
-        System.out.println("¼ÓÃÜºó-->"+encodedByte2);
+        System.out.println("åŠ å¯†åŽ-->"+encodedByte2);
         byte[] decodedByte = AESBC.decrypt(encodedByte, keyByte);
-        System.out.println("½âÃÜºó-->"+decodedByte);
+        System.out.println("è§£å¯†åŽ-->"+decodedByte);
         for(int i=0;i<encodedByte.length;i++){
             System.out.println(encodedByte[i]==encodedByte2[i]);
         }
-        /*************²âÊÔencryptAESHex()¡¢decrypt()**************/
-        System.out.println("Ô­ÎÄ-->"+data);
+        /*************æµ‹è¯•encryptAESHex()ã€decrypt()**************/
+        System.out.println("åŽŸæ–‡-->"+data);
         byte[] keyByte3 = AESBC.getKey(); 
-        System.out.println("ÃÜÔ¿-->"+Base64.encodeBase64String(keyByte3));//ÕâÀï½«¶þ½øÖÆµÄÃÜÔ¿Ê¹ÓÃbase64¼ÓÃÜ±£´æ£¬ÕâÒ²ÊÇÔÚÊµ¼ÊÖÐÊ¹ÓÃµÄ·½Ê½
+        System.out.println("å¯†é’¥-->"+Base64.encodeBase64String(keyByte3));//è¿™é‡Œå°†äºŒè¿›åˆ¶çš„å¯†é’¥ä½¿ç”¨base64åŠ å¯†ä¿å­˜ï¼Œè¿™ä¹Ÿæ˜¯åœ¨å®žé™…ä¸­ä½¿ç”¨çš„æ–¹å¼
         String encodedStr = AESBC.encryptAESHex(data, keyByte3);
-        System.out.println("¼ÓÃÜºó-->"+encodedStr);
+        System.out.println("åŠ å¯†åŽ-->"+encodedStr);
         String encodedByte4 = AESBC.encryptAESHex(data, keyByte3);
-        System.out.println("¼ÓÃÜºó-->"+encodedByte4);
+        System.out.println("åŠ å¯†åŽ-->"+encodedByte4);
         byte[] decodedByte3 = AESBC.decrypt(Base64.decodeBase64(encodedStr), keyByte3);
-        System.out.println("½âÃÜByte[]ºó-->"+decodedByte3);
+        System.out.println("è§£å¯†Byte[]åŽ-->"+decodedByte3);
         byte[] decodedByte4 = AESBC.decrypt(encodedStr, keyByte3);
-        System.out.println("½âÃÜStringºó-->"+decodedByte4);
+        System.out.println("è§£å¯†StringåŽ-->"+decodedByte4);
     }
 }
