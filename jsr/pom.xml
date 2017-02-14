@@ -8,5 +8,6 @@
   	<module>annotation</module>
   	<module>jsr311</module>
   	<module>jsr330</module>
+  	<module>jsr303</module>
   </modules>
 </project>

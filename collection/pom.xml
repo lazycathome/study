@@ -10,6 +10,7 @@
   	<module>annotation</module>
   	<module>nosql</module>
   	<module>jedi-framework</module>
+  	<module>shrio</module>
   </modules>
   
   <parent>

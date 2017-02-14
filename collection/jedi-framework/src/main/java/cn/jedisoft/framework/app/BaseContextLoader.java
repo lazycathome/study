@@ -1,6 +1,7 @@
 package cn.jedisoft.framework.app;
 
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class BaseContextLoader<T> implements ContextLoader<T> {
 
 	@Override
 	public T load(String confPath) {
-		InputStream stream = IOUtils.toInputStream(confPath);
+		InputStream stream = IOUtils.toInputStream(confPath, Charset.defaultCharset());
 		AppContextConf conf = ConfigUtils.load(AppContextConf.class, stream, ConfigUtils.TYPE_XML);
 
 		return load(conf);
