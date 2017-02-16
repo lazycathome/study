@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 国际化配置 -->  
+<bean id="localeResolver"  
+    class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />  
+<bean id="messageSource"  
+    class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+    <property name="basenames">  
+        <list>  
+            <value>classpath:messages/messages</value>  
+            <value>classpath:messages/Validation</value>  
+        </list>  
+    </property>  
+    <property name="useCodeAsDefaultMessage" value="true" />  
+</bean>  
+<!-- 注册验证器 -->  
+<mvc:annotation-driven validator="validator" />   
+ 
+<!-- 注册验证器 补充方式二-->
+<!--
+<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+    <property name="webBindingInitializer">
+        <ref bean="webBindingInitializer" />
+    </property>
+</bean>
+
+<bean id="webBindingInitializer" class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+    <property name="validator" ref="validator" />
+</bean>
+-->  
+
+<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">    
+      <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>    
+      <!-- 这里配置将使用上面国际化配置的messageSource -->  
+      <property name="validationMessageSource" ref="messageSource"/>    
+  </bean>  
