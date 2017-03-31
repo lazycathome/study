@@ -1,0 +1,23 @@
+
+这是我这两天对两个框架搜索的一些资料：
+参考资料：
+1）Apache Shiro
+Apache Shiro：http://shiro.apache.org/
+在Web项目中应用 Apache Shiro：http://www.ibm.com/developerworks/cn/java/j-lo-shiro/
+Apache Shiro权限框架在SpringMVC+Hibernate中的应用：http://www.thinksaas.cn/group/topic/99971/
+让Apache Shiro保护你的应用：http://www.infoq.com/cn/articles/apache-shiro/
+Integrating Apache Shiro into Spring-based Applications：http://shiro.apache.org/spring.html
+将 Shiro 作为应用的权限基础：http://www.ibm.com/developerworks/cn/opensource/os-cn-shiro/
+Spring Security：http://projects.spring.io/spring-security/
+Apache Shiro 简介：http://www.ibm.com/developerworks/cn/web/wa-apacheshiro/
+跟我学《Shiro》：http://jinnianshilongnian.iteye.com/category/305053
+Apache Shiro开源文档：http://www.open-open.com/doc/list/256
+10 Minute Tutorial on Apache Shiro：http://shiro.apache.org/10-minute-tutorial.html
+
+2）Spring Security
+Spring Security：http://projects.spring.io/spring-security
+Spring Security帮助文档：http://docs.spring.io/spring-security/site/docs/4.0.0.RC2/reference/htmlsingle
+SpringSecurity教程：http://blog.csdn.net/column/details/springsecurity.html
+Acegi Security（Acegi安全系统，是一个用于Spring Framework的安全框架，能够和目前流行的Web容器无缝集成。它使用了Spring的方式提供了安全和认证安全服务，包括使用Bean Context，拦截器和面向接口的编程方式。因此，Acegi安全系统能够轻松地适用于复杂的安全需求，Acegi成为Spring子项目后改名为Spring Security）
+Acegi Security：http://www.oschina.net/p/acegi+security
+Acegi Security 初探一：http://genius-zhang.iteye.com/blog/309109
