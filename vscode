@@ -1,0 +1,153 @@
+一、介绍
+
+对于Visual Studio Code开发工具，有一款优秀的GoLang插件，它的主页为：https://github.com/microsoft/vscode-go
+
+这款插件的特性包括：
+
+Colorization 代码着彩色
+Completion Lists 代码自动完成（使用gocode）
+Snippets  代码片段
+Quick Info 快速提示信息（使用godef）
+Goto Definition 跳转到定义（使用godef）
+Find References  搜索参考引用（使用go-find-references）
+File outline 文件大纲（使用go-outline）
+Workspace symbol search 工作区符号搜索（使用 go-symbols）
+Rename 重命名（使用gorename）
+Build-on-save 保存构建（使用go build和go test）
+Format 代码格式化（使用goreturns或goimports或gofmt）
+Add Imports  添加引用（使用 gopkgs）
+Debugging 调试代码（使用delve）
+IDE功能：
+
+
+
+调试功能：
+
+
+
+二、安装工具
+
+首先，你需要安装Visual Studio Code 版本为0.10。在命令面板（Ctrl-Shift-P或F1键）选择Extension，并选择Go。
+
+注：Visual Studio Code 安装，请查看《3.1 Visual Studio Code》。
+
+设置工作环境系统变量GOPATH，请查看《3.3 设置环境变量GOPATH》。本机的GOPATH为D:\GoWorks。打开要工作的GOPATH文件夹或子文件夹，可以开始编辑go文件。
+
+其他插件安装详见《四、插件配置》。安装之后界面如下：
+
+image
+
+按下F5，提示不能调试，要安装调试工具。
+
+调试工具安装，在命令行运行：
+
+go get -v -u github.com/peterh/liner github.com/derekparker/delve/cmd/dlv
+image
+
+在按下F5，进行调试：
+
+image
+
+image
+
+三、配置工具
+
+3.1 settings.json
+
+下面的Visual Studio代码设置可用于Go扩展。这些都可以在用户的喜好来设置或工作区设置（.vscode/settings.json）。
+打开工作区settings.json:
+
+image
+
+复制代码
+{
+    
+    "files.autoSave": "onFocusChange",
+    
+    "go.buildOnSave": true,
+    
+    "go.lintOnSave": true,
+    
+    "go.vetOnSave": true,
+    
+    "go.buildFlags": [],
+    
+    "go.lintFlags": [],
+    
+    "go.vetFlags": [],
+    
+    "go.useCodeSnippetsOnFunctionSuggest": false,
+    
+    "go.formatOnSave": false,
+    
+    "go.formatTool": "goreturns",
+   
+    "go.goroot": "C:\\go",
+    
+    "go.gopath": "D:\\GoWorks"
+
+}
+复制代码
+3.2 launch.json
+
+调试工具配置launch.json:
+
+image
+
+复制代码
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceRoot}",
+            "env": {},
+            "args": []
+        }
+    ]
+}
+复制代码
+program参数可以指一个包的文件夹进行调试，或该文件夹中的一个文件。
+
+mode参数可以被设置为：
+
+debug 编译调试器下的程序文件夹和发射的内容。 [默认]
+test 在程序文件夹中调试测试。
+exec 来运行构建当前代码的程序文件夹的预建的二进制文件来代替。
+3.3 构建和调试扩展
+
+可以通过外延扩展设置开发环境的调试。
+
+首先确保在.vscode/extensions没有安装。然后克隆其他地方版本库在你的机器上，运行NPM安装和打开Code的开发实例。
+
+在cmd命令中，打开D:\GoWorks目录：
+
+image
+
+在cmd窗口运行如下命令：
+
+git clone https://github.com/Microsoft/vscode-go
+
+image
+
+转到vscode-go目录
+
+image
+
+运行npm install
+
+image
+
+输入 code . 弹出 vscode-go窗口
+
+image
+
+现在你可以调试viewlet并选中Launch Extension当按F5键。
+在 [Extension Development Host] 实例中，打开GOPATH文件夹。
+你现在可以命中断点和单步执行扩展。
+如果对扩展.TS文件进行编辑，只需重新加载[Extension Development Host]Code实例在新扩展的代码加载，调试实例会自动连接。
+
+详细新可以参考：https://github.com/Microsoft/vscode-go/blob/master/src/debugAdapter/Readme.md
